@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>D2DSync</title>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+<script src="https://www.dropbox.com/static/api/dropbox-datastores-1.1-latest.js" type="text/javascript"></script>
+<script type="text/javascript">
+  function signInCallback(authResult){
+    if (authResult['status']['signed_in']) {
+    document.getElementById('signinButton').setAttribute('style', 'display: none');
+    console.log(authResult);
+    } else {
+      console.log('Sign-in state: ' + authResult['error']);
+    }
+  }
+</script>
+<script>
+  var client = new Dropbox.Client({key: '0bvytmw1toy1gve' });
+  client.authenticate({interactive: false}, function (error){
+    if(error) {
+      console.log("Error logging in with dropbox");
+  }
+});
+  if(client.isAuthenticated()){
+    console.log("Authenticated with dropbox");
+  }
+
+</script>
+</head>
+<body>
+<!-- <span id="signinButton">
+  <span
+    class="g-signin"
+    data-callback="signInCallback"
+    data-clientid="925341752581-oeg0c5vqlkf63u68rclmf1odtcpcd24f.apps.googleusercontent.com"
+    data-accesstype="offline"
+    data-cookiepolicy="single_host_origin"
+    data-requestvisibleactions="http://schema.org/AddAction"
+    data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/drive.file">
+  </span>
+</span>
+<button id="dropbox_signin" onclick="client.authenticate()">
+  Sign in with Dropbox
+</button -->>
+
+<div class="container">
+  <h1>Sync file from Dropbox to Google drive</h1>
+  <h3>Please sign in</h3>
+  <p>
+  <button type="button" class="btn btn-primary btn-lg google-signin">Sign-in with Google</button>
+  <button type="button" class="btn btn-primary btn-lg dropbox-signin">Sign-in with Dropbox</button>
+</p>
+</div>
+
+<script type="text/javascript">
+      (function() {
+       var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+       po.src = 'https://apis.google.com/js/client:plusone.js';
+       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+     })();
+    </script>
+</body>
+</html>
