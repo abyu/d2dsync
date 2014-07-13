@@ -7,9 +7,6 @@ class WorldIdentityController < ApplicationController
   require 'google/api_client'
 
   include UsersHelper
-  def identify
-
-  end
 
   def google
     google_creds = request_access_token(params[:code], 'google')
@@ -98,11 +95,10 @@ class WorldIdentityController < ApplicationController
 
   private 
     def request_access_token(code, client)
-      client_secrets = JSON.parse(File.read(File.join(File.dirname(__FILE__), "..", 'client_secrets.json')))
-      client_secret = client_secrets[client]
+      client_secret = ClientSecrets.get_client(client)
 
-      uri = URI.parse("#{client_secret['oauth_url']}token")
-      response = Net::HTTP.post_form(uri, "code" => code, "grant_type" => "authorization_code", "client_id" => client_secret["client_id"], "client_secret" => client_secret["client_secret"], "redirect_uri" => "http://localhost:3000/identify/#{client}")
+      uri = URI.parse("#{client_secret.uri}token")
+      response = Net::HTTP.post_form(uri, "code" => code, "grant_type" => "authorization_code", "client_id" => client_secret.client_id, "client_secret" => client_secret.client_secret, "redirect_uri" => "http://localhost:3000/identify/#{client}")
       
       if response.kind_of? Net::HTTPSuccess
         JSON.parse(response.body)

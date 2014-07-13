@@ -22,10 +22,14 @@ $(document).ready(function () {
 
   $('.google-unlink').bind('click', function(){
     window.location = "/revoke/google"
-  })
+  });
 
   $('.dropbox-unlink').bind('click', function(){
     window.location = "/revoke/dropbox"
-  })
+  });
+
+  $('.logout').bind('click', function() {
+    window.location = "/logout"
+  });
 
 });

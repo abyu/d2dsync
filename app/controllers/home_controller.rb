@@ -7,6 +7,11 @@ class HomeController < ApplicationController
 	
 	end
 
+  def logout
+    session[:user_id] = nil
+    redirect_to "/"
+  end
+
 	def sync
     dropbox_account = @user.linked_account.find { |account| account.account_type == 'dropbox'}
 

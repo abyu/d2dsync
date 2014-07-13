@@ -10,9 +10,5 @@ require 'rails_helper'
 #     end
 #   end
 # end
-RSpec.describe UsersHelper, :type => :helper do
-	describe "#create_user" do
-    it "a user with one linked account" do
-    end
-	end  
+RSpec.describe UsersHelper, :type => :helper do 
 end
