@@ -15,4 +15,7 @@
 /log/*.log
 /tmp
 
+# Ignore client secrets json file
+*client_secrets.json
+
 .rspec
