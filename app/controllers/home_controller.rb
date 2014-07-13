@@ -3,6 +3,8 @@ class HomeController < ApplicationController
   require 'google/api_client'
 	before_action :set_user
 
+  DEFAULT_FILE = "no_file.txt"
+
 	def index
 	
 	end
@@ -12,17 +14,34 @@ class HomeController < ApplicationController
     redirect_to "/"
   end
 
+
 	def sync
     dropbox_account = @user.linked_account.find { |account| account.account_type == 'dropbox'}
 
 		dropbox_client = DropboxClient.new(dropbox_account[:access_token])
     file_metadata = find_file(dropbox_client.metadata('/'), dropbox_client)
-    file_path = download_file(file_metadata, dropbox_client)
+    file_path = file_metadata ? download_file(file_metadata, dropbox_client) : default_file
+    file_metadata = default_file_metadata unless file_metadata
+      
     upload_file_to_drive(file_metadata, file_path)
-    render json: {:status => "success"}
+    render json: {:status => "success", :message => "Copied #{file_metadata['path']}"}
 
 	end
 
+  private
+
+  def default_file
+    p "No file was found, defaulting to #{DEFAULT_FILE}"
+    DEFAULT_FILE
+  end
+
+  def default_file_metadata
+    {
+      "path" => "#{DEFAULT_FILE}",
+      "mime_type" => "text/plain"
+    }
+  end
+  
   def find_file(folder_metadata, client)
     folder_metadata['contents'].each do |content|
       if content['is_dir']
@@ -61,6 +80,7 @@ class HomeController < ApplicationController
     google_client.authorization.client_secret = 'i8D4IBvWzwxK3BhbeHyS-vv0'
     google_client.authorization.access_token = google_account["access_token"]
     google_client.authorization.refresh_token = JSON.parse(google_account["additional_params"])["refresh_token"]
+    p JSON.parse(google_account["additional_params"])["refresh_token"]
 
     drive = google_client.discovered_api('drive', 'v2')
 
@@ -70,7 +90,7 @@ class HomeController < ApplicationController
       'mimeType' => file_metadata['mime_type']
     })
 
-    media = Google::APIClient::UploadIO.new('magnum-opus.txt', file_metadata['mime_type'])
+    media = Google::APIClient::UploadIO.new(file_path, file_metadata['mime_type'])
     result = google_client.execute(:api_method => drive.files.insert, :body_object => file, :media => media, :parameters => {'uploadType' => 'multipart', 'alt' => 'json'})
 
     raise "Exception while trying to upload file to google drive - #{result.data}" unless result.success?

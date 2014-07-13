@@ -4,7 +4,7 @@
 $(document).ready(function () {
 	$('.copy').bind('click', function(){
 		
-		$('#initiate_sync').hide();
+		$('.copy').attr('disabled','disabled');
 		$('#sync_status').show();
 		$('#sync_status').html("File copy from your dropbox account to google drive has been initiated, please wait...");
 		$.ajax({
@@ -13,9 +13,12 @@ $(document).ready(function () {
 		  success: function(result) {
 	         	$('#sync_status').html('File has been copied over to your google drive home page.');
 	         	$('#initiate_sync').show();
+            $('.copy').removeAttr('disabled');
 	    },
 			error: function(result){
+          $('#sync_status').html('There was an error when trying to sync, please try again.');
 				$('#initiate_sync').show();
+        $('.copy').removeAttr('disabled');
 			}       
 		});
 	});

@@ -10,6 +10,7 @@ class WorldIdentityController < ApplicationController
 
   def google
     google_creds = request_access_token(params[:code], 'google')
+    p google_creds
     google_client = Google::APIClient.new(:application_name => "D2DSync", :application_version => '1.0.0')
     google_client.authorization.client_id = '925341752581-oeg0c5vqlkf63u68rclmf1odtcpcd24f.apps.googleusercontent.com'
     google_client.authorization.client_secret = 'i8D4IBvWzwxK3BhbeHyS-vv0'
