@@ -24,7 +24,7 @@ class HomeController < ApplicationController
     file_metadata = default_file_metadata unless file_metadata
       
     upload_file_to_drive(file_metadata, file_path)
-    render json: {:status => "success", :message => "Copied #{file_metadata['path']}"}
+    render json: {:status => "success", :message => "#{file_metadata['path']}"}
 
 	end
 
