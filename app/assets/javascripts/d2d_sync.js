@@ -4,7 +4,7 @@
 $(document).ready(function () {
 	
 	$('.google-signin').bind('click', function() {
-		window.location = "https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read https://www.googleapis.com/auth/drive.file&state=%2Fprofile&redirect_uri=http://localhost:3000/identify/google&response_type=code&client_id=925341752581-oeg0c5vqlkf63u68rclmf1odtcpcd24f.apps.googleusercontent.com&approval_prompt=force&access_type=offline"
+		window.location = "https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read https://www.googleapis.com/auth/drive.file&state=%2Fprofile&redirect_uri=http://localhost:3000/identify/google&response_type=code&client_id=925341752581-oeg0c5vqlkf63u68rclmf1odtcpcd24f.apps.googleusercontent.com&access_type=offline"
 		
 	});
 
