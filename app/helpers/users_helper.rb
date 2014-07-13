@@ -2,13 +2,14 @@ module UsersHelper
 	def create_user(params)
     user = get_user(params[:user])
     user_linked_account_types = user.linked_account.map { |account| account.account_type}
+    linked_accounts_count = user.linked_account.count
+
     params[:linked_accounts].each_with_index do |linked_account, index|
       lparams = ActionController::Parameters.new(linked_account[:linked_account])
       acc = LinkedAccount.new(lparams.permit(:account_type, :access_token, :linked_user_id, :additional_params))
-      acc.sequence = user.linked_account.count
-      p acc
+      acc.sequence = linked_accounts_count + index
       user.linked_account << acc unless (user_linked_account_types.include? acc.account_type)
-    end
+    end if params[:linked_accounts]
     raise "Failed when trying to save user" unless user.save
     user
 	end
@@ -22,6 +23,7 @@ module UsersHelper
     end
 
     raise "Failed when trying to save user" unless user.save
+    user
   end
 
   def get_user(user_params)
