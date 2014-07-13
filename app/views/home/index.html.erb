@@ -1,0 +1,40 @@
+<h1>Hi <%= @user.name  %> </h1>
+<p>
+You can sync your files from dropbox account to google account, once you have linked them both.
+</p>
+
+<p>
+<% google_account_linked, dropbox_account_linked = false %>
+<% if @user.linked_account.any? { |linked_account| linked_account.account_type == 'google'}%>
+	<% google_account_linked = true %>
+	<button type="button" class="btn btn-primary btn-lg google-unlink">Unlink Google Account</button> 
+<%else %>
+	<button type="button" class="btn btn-primary btn-lg google-signin">Link Google Account</button>
+<% end %>  
+
+<% if @user.linked_account.any? { |linked_account| linked_account.account_type == 'dropbox'}%>
+	<% dropbox_account_linked = true %>
+	<button type="button" class="btn btn-primary btn-lg dropbox-unlink">Unlink Dropbox Account</button> 
+<% else %>
+	<button type="button" class="btn btn-primary btn-lg dropbox-signin">Link Dropbox Account</button>
+<% end %>  
+</p>
+
+<p id="initiate_sync">
+	<% copy_disabled = "" %>
+	<p>
+	<% if(!google_account_linked or !dropbox_account_linked) %>
+		You have to link both google and dropbox in order to sync a file, currently you have your google account <%= (google_account_linked ? "linked":"unlinked") %>,
+		your dropbox account <%= (dropbox_account_linked ? "linked" : "unlinked") %>.
+		<% copy_disabled = "disabled" %>
+	<% end %>
+	</p>
+	<p>
+	To copy a file from dropbox to google drive click <button type="button" class="btn btn-primary btn-lg copy <%= copy_disabled %>">copy</button>.
+	</p>
+</p>
+
+<p id="sync_status">
+
+</p>
+

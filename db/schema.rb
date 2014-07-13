@@ -11,12 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140709040825) do
+ActiveRecord::Schema.define(version: 20140712053557) do
+
+  create_table "linked_accounts", force: true do |t|
+    t.string   "account_type"
+    t.string   "access_token"
+    t.string   "additional_params"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "linked_user_id"
+    t.integer  "sequence"
+  end
+
+  add_index "linked_accounts", ["user_id"], name: "index_linked_accounts_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email_address"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name"
   end
 
 end
