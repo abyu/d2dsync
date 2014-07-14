@@ -9,16 +9,12 @@ class WorldIdentityController < ApplicationController
   include UsersHelper
 
   def google
-    google_creds = request_access_token(params[:code], 'google')
-    p google_creds
-    google_client = Google::APIClient.new(:application_name => "D2DSync", :application_version => '1.0.0')
-    google_client.authorization.client_id = '925341752581-oeg0c5vqlkf63u68rclmf1odtcpcd24f.apps.googleusercontent.com'
-    google_client.authorization.client_secret = 'i8D4IBvWzwxK3BhbeHyS-vv0'
-    google_client.authorization.access_token = google_creds["access_token"]
-    plus = google_client.discovered_api('plus')
 
-    response = google_client.execute(:api_method => plus.people.get, :parameters => {'userId' => 'me'})
-    google_user = response.data.to_hash
+    google_client = HomeHelper::GoogleApiClient.get_for('google')
+    google_creds = request_access_token(params[:code], 'google')
+    google_client.access_token = google_creds["access_token"]
+    
+    google_user = google_client.get_user_info
 
     user_params = {
       :user => {
